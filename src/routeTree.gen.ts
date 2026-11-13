@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as HandlerRouteImport } from './routes/handler'
 import { Route as SubmitRouteImport } from './routes/submit'
 import { Route as TrackRouteImport } from './routes/track'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HandlerRoute = HandlerRouteImport.update({
+  id: '/handler',
+  path: '/handler',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubmitRoute = SubmitRouteImport.update({
@@ -31,30 +37,34 @@ const TrackRoute = TrackRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/handler': typeof HandlerRoute
   '/submit': typeof SubmitRoute
   '/track': typeof TrackRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/handler': typeof HandlerRoute
   '/submit': typeof SubmitRoute
   '/track': typeof TrackRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/handler': typeof HandlerRoute
   '/submit': typeof SubmitRoute
   '/track': typeof TrackRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/submit' | '/track'
+  fullPaths: '/' | '/handler' | '/submit' | '/track'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/submit' | '/track'
-  id: '__root__' | '/' | '/submit' | '/track'
+  to: '/' | '/handler' | '/submit' | '/track'
+  id: '__root__' | '/' | '/handler' | '/submit' | '/track'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  HandlerRoute: typeof HandlerRoute
   SubmitRoute: typeof SubmitRoute
   TrackRoute: typeof TrackRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/handler': {
+      id: '/handler'
+      path: '/handler'
+      fullPath: '/handler'
+      preLoaderRoute: typeof HandlerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/submit': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  HandlerRoute: HandlerRoute,
   SubmitRoute: SubmitRoute,
   TrackRoute: TrackRoute,
 }
