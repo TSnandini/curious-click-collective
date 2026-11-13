@@ -13,7 +13,7 @@ import { systemQuery } from "@/lib/queries";
 
 export const Route = createFileRoute("/track")({
   validateSearch: (s: Record<string, unknown>): { id?: string } =>
-    typeof s.id === "string" && s.id ? { id: s.id.slice(0, 30) } : {},
+    typeof s["id"] === "string" && s["id"] ? { id: s["id"].slice(0, 30) } : {},
   head: () => ({
     meta: [
       { title: "Track your report — Kitchen Ticket" },

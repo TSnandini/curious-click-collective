@@ -72,7 +72,7 @@ export function simulate(dfa: DFA, input: string): SimulationResult {
   const trace = [state];
   const chars = Array.from(input);
   for (let i = 0; i < chars.length; i++) {
-    const ch = chars[i];
+    const ch = chars[i]!;
     const t = (dfa.transitions[state] ?? []).find((tr) => matches(tr.on, ch));
     if (!t) {
       trace.push(DEAD);

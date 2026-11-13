@@ -15,8 +15,9 @@ function fail(msg: string, err?: unknown): never {
 }
 
 function maskName(name: string) {
-  const [first, ...rest] = name.trim().split(/\s+/);
-  return rest.length ? `${first} ${rest[rest.length - 1][0]}.` : first;
+  const [first = name, ...rest] = name.trim().split(/\s+/);
+  const last = rest[rest.length - 1];
+  return last ? `${first} ${last[0]}.` : first;
 }
 
 async function loadRouting() {

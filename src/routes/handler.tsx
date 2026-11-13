@@ -39,7 +39,7 @@ function HandlerPage() {
   const updStatus = useServerFn(updateStatusFn);
 
   const handlerMut = useMutation({
-    mutationFn: (v: { available: boolean; capacity: number }) => updHandler({ data: { id: h.id, ...v } }),
+    mutationFn: (v: { available: boolean; capacity: number }) => updHandler({ data: { id: h!.id, ...v } }),
     onSuccess: (r) => {
       qc.invalidateQueries({ queryKey: ["system"] });
       toast.success(r.dequeued.length ? `Saved — ${r.dequeued.length} queued report(s) dispatched` : "Handler updated");

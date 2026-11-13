@@ -116,7 +116,7 @@ function TestsPage() {
 }
 
 function DfaExplorer() {
-  const [key, setKey] = useState(ALL_DFAS[0].key);
+  const [key, setKey] = useState(ALL_DFAS[0]!.key);
   const dfa = ALL_DFAS.find((d) => d.key === key)!;
   const [input, setInput] = useState(dfa.example);
   const sim = useMemo(() => simulate(dfa, input), [dfa, input]);

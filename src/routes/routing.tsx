@@ -21,7 +21,7 @@ export const Route = createFileRoute("/routing")({
   component: RoutingPage,
 });
 
-function HandlerChip({ h, role }: { h?: HandlerRow; role: "P" | "B" }) {
+function HandlerChip({ h, role }: { h?: HandlerRow | undefined; role: "P" | "B" }) {
   if (!h) return null;
   const full = h.load >= h.capacity;
   return (

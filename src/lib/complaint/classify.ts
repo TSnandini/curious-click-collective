@@ -66,7 +66,8 @@ export function classify(description: string, complaintCode: string): Classifica
   const ranked = [...CATEGORIES].sort(
     (a, b) => scores[b] - scores[a] || SEVERITY_ORDER.indexOf(a) - SEVERITY_ORDER.indexOf(b),
   );
-  const [top, second] = ranked;
+  const top = ranked[0]!;
+  const second = ranked[1]!;
   const textOnly = (c: Category) => scores[c] - (c === codeCat ? CODE_WEIGHT : 0);
 
   // Conflict: the description points at a different category at least as strongly as the winner's own words.
