@@ -88,3 +88,12 @@ export function generateReportId(now = new Date(), rand = Math.random): string {
   for (let i = 0; i < 4; i++) suffix += alphabet[Math.floor(rand() * alphabet.length)];
   return `RCT-${yy}${mm}${dd}-${suffix}`;
 }
+
+/** Generate an ID not already taken, retrying on collision (the database enforces the same rule). */
+export function generateUniqueReportId(taken: Set<string>, now = new Date(), rand = Math.random): string {
+  for (let i = 0; i < 50; i++) {
+    const id = generateReportId(now, rand);
+    if (!taken.has(id)) return id;
+  }
+  throw new Error("Could not generate a unique report ID");
+}

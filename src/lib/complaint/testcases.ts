@@ -6,7 +6,7 @@ import { classify, decidePriority } from "./classify";
 import { canTransition, CATEGORIES } from "./constants";
 import { ALL_DFAS, dfaRegexAgree, emailDFA, orderIdDFA, phoneDFA, reportIdDFA, restaurantIdDFA, simulate } from "./dfa";
 import { dispatch, orderQueue, type HandlerState, type RoutingEntry } from "./dispatch";
-import { generateReportId, validateField, validateReport, zoneFromCode, type ReportInput } from "./validate";
+import { generateUniqueReportId, validateField, validateReport, zoneFromCode, type ReportInput } from "./validate";
 
 export interface TestCase {
   id: string;
@@ -225,12 +225,12 @@ export const TEST_CASES: TestCase[] = [
   },
   {
     id: "TC-22", area: "Status", title: "Report IDs are unique and DFA-valid",
-    expected: "1000 generated IDs, all unique, all accepted by the Report ID DFA",
+    expected: "1000 IDs issued on one day (collisions retried), all unique, all accepted by the Report ID DFA",
     run: () => {
-      const ids = Array.from({ length: 1000 }, () => generateReportId());
-      const unique = new Set(ids).size;
-      const valid = ids.every((id) => simulate(reportIdDFA, id).accepted);
-      return check(unique >= 999 && valid, `${unique} unique, all valid: ${valid}`);
+      const taken = new Set<string>();
+      for (let i = 0; i < 1000; i++) taken.add(generateUniqueReportId(taken));
+      const valid = [...taken].every((id) => simulate(reportIdDFA, id).accepted);
+      return check(taken.size === 1000 && valid, `${taken.size} unique, all valid: ${valid}`);
     },
   },
 ];
